@@ -1,41 +1,61 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="common/template_head::head('Item:'+${item.attribute1})">
+<head th:replace="common/template_head::head('myPetStore Item')">
 </head>
 <body>
 <header th:replace="common/template_menu::header"></header>
-
 <div id="Content">
+
     <div id="BackLink">
-        <a href="/catalog/main">Return to Main Menu</a>
+        <a th:href="@{/catalog/product(productId=${product.productId})}" th:text="'Return to '+ ${product.productId}">Return to Product</a>
     </div>
-    <div id="Item">
+
+    <div id="Catalog">
+
         <table>
             <tr>
-                <td>${product.description}</td>
+                <td th:utext="${product.description}"></td>
             </tr>
             <tr>
-                <td><b th:text="${item.itemId}"> ${item.itemId} </b></td>
+                <td>
+                    <b th:text="${item.itemId}"> </b>
+                </td>
             </tr>
             <tr>
-                <td><b><font size="4" th:text="${item.attribute1}">  </font></b></td>
+                <td>
+                    <b>
+                        <font size="4" th:text="${item.attribute1} + ' '+${product.name}">
+                        </font>
+                    </b>
+                </td>
             </tr>
             <tr>
                 <td th:text="${product.name}"></td>
             </tr>
             <tr>
-                <td th:text="${item.quantity <= 0}?'Back ordered.':${item.quantity}+'in stock.'" ></td>
+                <td th:if="${item.quantity<=0}">
+                    Back ordered.
+                </td>
+                <td th:if="${item.quantity}>0" th:text="${item.quantity}+' in stock.'">
+                    xxx in stock.
+                </td>
             </tr>
             <tr>
-                <td th:text="${item.listPrice}"></td>
+                <td th:text="${item.listPrice}">
+                    listPrice
+                </td>
             </tr>
 
             <tr>
-                <td><a href="#" class="Button">Add to Cart</a></td>
+                <td>
+                    <a class="Button" href="#">Add to Cart</a>
+                </td>
             </tr>
+        </table>
+
     </div>
-</div>
 
+</div>
 <footer th:replace="common/template_menu::footer"></footer>
 </body>
 </html>
