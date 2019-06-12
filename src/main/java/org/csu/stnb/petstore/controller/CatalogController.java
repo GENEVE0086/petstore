@@ -20,7 +20,7 @@ public class CatalogController {
     CatalogService catalogService;
 
     @GetMapping("/catalog/main")
-    public String viewMain(){
+    public String viewMain() {
         return "catalog/main";
     }
 
@@ -30,7 +30,7 @@ public class CatalogController {
             Category category = catalogService.getCategory(categoryId);
             List<Product> productList = catalogService.getProductListByCategory(categoryId);
             model.addAttribute("category", category);
-            model.addAttribute("productList",productList);
+            model.addAttribute("productList", productList);
         }
         return "catalog/category";
     }
@@ -41,27 +41,27 @@ public class CatalogController {
             Product product = catalogService.getProduct(productId);
             List<Item> itemList = catalogService.getItemListByProduct(productId);
             model.addAttribute("product", product);
-            model.addAttribute("itemList",itemList);
+            model.addAttribute("itemList", itemList);
         }
         return "catalog/product";
     }
 
     @GetMapping("/catalog/item")
-    public  String viewItem(@RequestParam("itemId") String itemId, Model model){
-        if(itemId != null){
+    public String viewItem(@RequestParam("itemId") String itemId, Model model) {
+        if (itemId != null) {
             Item item = catalogService.getItem(itemId);
             Product product = item.getProduct();
-            model.addAttribute("product",product);
-            model.addAttribute("item",item);
+            model.addAttribute("product", product);
+            model.addAttribute("item", item);
         }
         return "catalog/item";
     }
 
     @PostMapping("/catalog/searchProducts")
-    public String viewSearch(@RequestParam("keyword") String keyword, Model model){
-        if(keyword != null){
+    public String viewSearch(@RequestParam("keyword") String keyword, Model model) {
+        if (keyword != null) {
             List<Product> searchProductList = catalogService.searchProductList(keyword);
-            model.addAttribute("searchProductList",searchProductList);
+            model.addAttribute("searchProductList", searchProductList);
         }
         return "catalog/searchProducts";
     }
