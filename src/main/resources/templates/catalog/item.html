@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Item:'+${item.attribute1})">
+</head>
+<body>
+<header th:replace="common/template_menu::header"></header>
+
+<div id="Content">
+    <div id="BackLink">
+        <a href="/catalog/main">Return to Main Menu</a>
+    </div>
+    <div id="Item">
+        <table>
+            <tr>
+                <td>${product.description}</td>
+            </tr>
+            <tr>
+                <td><b th:text="${item.itemId}"> ${item.itemId} </b></td>
+            </tr>
+            <tr>
+                <td><b><font size="4" th:text="${item.attribute1}">  </font></b></td>
+            </tr>
+            <tr>
+                <td th:text="${product.name}"></td>
+            </tr>
+            <tr>
+                <td th:text="${item.quantity <= 0}?'Back ordered.':${item.quantity}+'in stock.'" ></td>
+            </tr>
+            <tr>
+                <td th:text="${item.listPrice}"></td>
+            </tr>
+
+            <tr>
+                <td><a href="#" class="Button">Add to Cart</a></td>
+            </tr>
+    </div>
+</div>
+
+<footer th:replace="common/template_menu::footer"></footer>
+</body>
+</html>

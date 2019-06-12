@@ -1,5 +1,6 @@
 package org.csu.stnb.petstore.persistence;
 
+import org.csu.stnb.petstore.domain.Item;
 import org.csu.stnb.petstore.domain.Product;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface ProductMapper {
     Product getProduct(String productId);
 
     List<Product> searchProductList(String keyword);
+
+
 }
