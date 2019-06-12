@@ -29,7 +29,7 @@
                 <td th:text="${item.attribute1}+' '+${product.name}">Adult Female Persian</td>
                 <td th:text="${item.listPrice}">$93.50</td>
                 <td>
-                    <a class="Button" th:href="@{/addItemToCart(workingItemId=${item.itemId})}">Add to Cart</a>
+                    <a class="Button" th:href="@{/cart/addItem(workingItemId=${item.itemId})}">Add to Cart</a>
                 </td>
             </tr>
             <tr>

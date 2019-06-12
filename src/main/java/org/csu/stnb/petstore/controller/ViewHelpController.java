@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewHelpController {
 
-    @GetMapping("/viewHelp")
-    public String viewHelp() {
-        return "help";
-    }
+  @GetMapping("/viewHelp")
+  public String viewHelp() {
+    return "help";
+  }
 }

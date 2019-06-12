@@ -1,15 +1,15 @@
 package org.csu.stnb.petstore.service;
 
-import org.csu.stnb.petstore.domain.Order;
-
 import java.util.List;
 
+import org.csu.stnb.petstore.domain.Order;
+
 public interface OrderService {
-    void insertOrder(Order order);
+  void insertOrder(Order order);
 
-    Order getOrder(int orderId);
+  Order getOrder(int orderId);
 
-    List<Order> getOrdersByUsername(String username);
+  List<Order> getOrdersByUsername(String username);
 
-    int getNextId(String name);
+  int getNextId(String name);
 }

@@ -56,7 +56,7 @@
   </select>
 
     <update id="updateInventoryQuantity" parameterType="map">
-    UPDATE INVENTORY SET
+    UPDATE inventory SET
       QTY = QTY - #{increment}
     WHERE itemId = #{itemId}
   </update>

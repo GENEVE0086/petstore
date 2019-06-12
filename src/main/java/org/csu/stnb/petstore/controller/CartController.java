@@ -7,12 +7,8 @@ import org.csu.stnb.petstore.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 
 @Controller
@@ -24,7 +20,7 @@ public class CartController {
 
     Cart cart = new Cart();
 
-    @GetMapping("/viewCart")
+    @GetMapping("/cart/view")
     public String viewCart(Model model){
         if(cart == null){
             cart = new Cart();
@@ -33,7 +29,7 @@ public class CartController {
         return "cart/cart";
     }
 
-    @GetMapping("/addItemToCart")
+    @GetMapping("/cart/addItem")
     public String addItemToCart(@RequestParam("workingItemId")String workingItemId, Model model){
 //        if(cart==null){
 //            cart = new Cart();
@@ -49,27 +45,27 @@ public class CartController {
         return "cart/cart";
     }
 
-    @PostMapping("/updateCart")
-    public String updateCart(HttpServletRequest request, Model model){
+    @PostMapping("/cart/update")
+    public String updateCart(@ModelAttribute("name")String itemId, Model model){
         Iterator<CartItem> cartItems = cart.getAllCartItems();
         while (cartItems.hasNext()) {
-            CartItem cartItem = (CartItem) cartItems.next();
-            String itemId = cartItem.getItem().getItemId();
+            CartItem cartItem = cartItems.next();
+            String _itemId = cartItem.getItem().getItemId();
             try {
-                int quantity = Integer.parseInt((String)request.getParameter(itemId));
-                cart.setQuantityByItemId(itemId, quantity);
+                int quantity = Integer.parseInt(itemId);
+                cart.setQuantityByItemId(_itemId, quantity);
                 if (quantity < 1) {
                     cartItems.remove();
                 }
             } catch (Exception e) {
-                System.out.println("error");
+                //ignore parse exceptions on purpose
             }
         }
         model.addAttribute("cart",cart);
         return "cart/cart";
     }
 
-    @GetMapping("/removeItemFromCart")
+    @GetMapping("/cart/removeItem")
     public String removeItemFromCart(@RequestParam("cartItemId")String cartItemId,Model model){
 
         Item item=cart.removeItemById(cartItemId);

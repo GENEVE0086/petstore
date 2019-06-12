@@ -11,7 +11,7 @@
     <div id="Catalog">
         <div id="Cart">
             <h2>Shopping Cart</h2>
-            <form action="/updateCart" method="post">
+/            <form action="/updateCart" method="post">
                 <table>
                     <tr>
                         <th><b>Item ID</b></th>
@@ -38,7 +38,7 @@
                         </td>
                         <td th:text="'$'+${cartItem.item.listPrice}">$93.50</td>
                         <td th:text="'$'+${cartItem.total}">$93.50</td>
-                        <td><a th:href="@{/removeItemFromCart(cartItemId=${cartItem.item.itemId})}" class="Button">Remove</a></td>
+                        <td><a th:href="@{/cart/removeItem(cartItemId=${cartItem.item.itemId})}" class="Button">Remove</a></td>
                     </tr>
                     <tr>
                         <td th:text="'Sub Total: $'+${cart.subTotal}">Sub Total:xx
@@ -52,7 +52,7 @@
 
             <!-- 需要判断是否登录 -->
 
-            <a href="/viewOrderForm" th:if="${cart.numberOfItems > 0}" class="Button">Proceed to Checkout</a>
+            <a href="/order/viewOrder" th:if="${cart.numberOfItems > 0}" class="Button">Proceed to Checkout</a>
         </div>
         <div id="MyList">
 
