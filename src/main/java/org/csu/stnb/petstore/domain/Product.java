@@ -2,7 +2,7 @@ package org.csu.stnb.petstore.domain;
 
 import java.io.Serializable;
 
-public class Product implements Serializable {
+public class  Product implements Serializable {
     private String productId;
     private String categoryId;
     private String name;

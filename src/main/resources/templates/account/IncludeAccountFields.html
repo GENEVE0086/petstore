@@ -1,0 +1,90 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="info">
+<h3>Account Information</h3>
+
+    <table>
+        <tr>
+            <td>First name:</td>
+            <td>
+                <input type="text" name="account.firstName" th:field="${account.firstName}" />
+            </td>
+        </tr>
+        <tr>
+            <td>Last name:</td>
+            <td>
+                <input type="text" name="account.lastName" th:field="${account.lastName}" />
+            </td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="text" size="40" name="account.email" th:field="${account.email}" /></td>
+        </tr>
+        <tr>
+            <td>Phone:</td>
+            <td><input type="text" name="account.phone" th:field="${account.phone}" /></td>
+        </tr>
+        <tr>
+            <td>Address 1:</td>
+            <td><input type="text" size="40" name="account.address1" th:field="${account.address1}" /></td>
+        </tr>
+        <tr>
+            <td>Address 2:</td>
+            <td><input type="text" size="40" name="account.address2" th:field="${account.address2}" /></td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td><input type="text" name="account.city" th:field= "${account.city}" /></td>
+        </tr>
+        <tr>
+            <td>State:</td>
+            <td><input type="text" size="4" name="account.state" th:field="${account.state}" /></td>
+        </tr>
+        <tr>
+            <td>Zip:</td>
+            <td><input type="text" size="10" name="account.zip" th:field="${account.zip}" /></td>
+        </tr>
+        <tr>
+            <td>Country:</td>
+            <td><input type="text" size="15" name="account.country" th:field="${account.country}" /></td>
+        </tr>
+    </table>
+
+<h3>Profile Information</h3>
+
+<table>
+    <tr>
+        <td>Language Preference:</td>
+        <td>
+            <select th:field="${account.languagePreference}" id="languagePreference">
+                <option th:selected="${account.languagePreference == 'english'}" value="english">english</option>
+                <option th:selected="${account.languagePreference == 'japanese'}"  value="japanese">japanese</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Favourite Category:</td>
+        <td>
+            <select th:field="${account.favouriteCategoryId}" id="favouriteCategoryId">
+                <option th:selected="${account.favouriteCategoryId == 'FISH'}" value="FISH">FISH</option>
+                <option th:selected="${account.favouriteCategoryId == 'DOGS'}" value="DOGS">DOGS</option>
+                <option th:selected="${account.favouriteCategoryId == 'REPTILES'}" value="REPTILES">REPTILES</option>
+                <option th:selected="${account.favouriteCategoryId == 'CATS'}" value="CATS">CATS</option>
+                <option th:selected="${account.favouriteCategoryId eq 'BIRDS'}" value="BIRDS">BIRDS</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Enable MyList</td>
+        <td>
+            <input type="checkbox" th:field="${account.listOption}"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Enable MyBanner</td>
+        <td>
+            <input type="checkbox" th:field="${account.bannerOption}"/>
+        </td>
+    </tr>
+
+</table>
+</div>
