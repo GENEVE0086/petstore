@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ItemMapper {
-    void updateInventoryQuantity(Map<String,Object> param);
+    void updateInventoryQuantity(Map<String, Object> param);
 
     int getInventoryQuantity(String itemId);
 
