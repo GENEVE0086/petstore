@@ -1,107 +1,125 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="persistence.AccountDAO">
-  <select id="getAccountByUsername" parameterType="string" resultType="account">
-    SELECT
-    SIGNON.USERNAME,
-    ACCOUNT.EMAIL,
-    ACCOUNT.FIRSTNAME,
-    ACCOUNT.LASTNAME,
-    ACCOUNT.STATUS,
-    ACCOUNT.ADDR1 AS address1,
-    ACCOUNT.ADDR2 AS address2,
-    ACCOUNT.CITY,
-    ACCOUNT.STATE,
-    ACCOUNT.ZIP,
-    ACCOUNT.COUNTRY,
-    ACCOUNT.PHONE,
-    PROFILE.LANGPREF AS languagePreference,
-    PROFILE.FAVCATEGORY AS favouriteCategoryId,
-    PROFILE.MYLISTOPT AS listOption,
-    PROFILE.BANNEROPT AS bannerOption,
-    BANNERDATA.BANNERNAME
-    FROM ACCOUNT, PROFILE, SIGNON, BANNERDATA
-    WHERE ACCOUNT.USERID = #{username}
-    AND SIGNON.USERNAME = ACCOUNT.USERID
-    AND PROFILE.USERID = ACCOUNT.USERID
-    AND PROFILE.FAVCATEGORY = BANNERDATA.FAVCATEGORY
-  </select>
-  <select id="getAccountByUsernameAndPassword" parameterType="account" resultType="account">
-    SELECT
-    SIGNON.USERNAME,
-    ACCOUNT.EMAIL,
-    ACCOUNT.FIRSTNAME,
-    ACCOUNT.LASTNAME,
-    ACCOUNT.STATUS,
-    ACCOUNT.ADDR1 AS address1,
-    ACCOUNT.ADDR2 AS address2,
-    ACCOUNT.CITY,
-    ACCOUNT.STATE,
-    ACCOUNT.ZIP,
-    ACCOUNT.COUNTRY,
-    ACCOUNT.PHONE,
-    PROFILE.LANGPREF AS languagePreference,
-    PROFILE.FAVCATEGORY AS favouriteCategoryId,
-    PROFILE.MYLISTOPT AS listOption,
-    PROFILE.BANNEROPT AS bannerOption,
-    BANNERDATA.BANNERNAME
-    FROM ACCOUNT, PROFILE, SIGNON, BANNERDATA
-    WHERE ACCOUNT.USERID = #{username}
-    AND SIGNON.PASSWORD = #{password}
-    AND SIGNON.USERNAME = ACCOUNT.USERID
-    AND PROFILE.USERID = ACCOUNT.USERID
-    AND PROFILE.FAVCATEGORY = BANNERDATA.FAVCATEGORY
+<mapper namespace="persistence.AccountMapper">
 
+  <select id="getAccountByUsername" parameterType="string" resultType="Account">
+    SELECT
+          signon.USERNAME,
+          account.EMAIL,
+          account.FIRSTNAME,
+          account.LASTNAME,
+          account.STATUS,
+          account.ADDR1 AS address1,
+          account.ADDR2 AS address2,
+          account.CITY,
+          account.STATE,
+          account.ZIP,
+          account.COUNTRY,
+          account.PHONE,
+          profile.LANGPREF AS languagePreference,
+          profile.FAVCATEGORY AS favouriteCategoryId,
+          profile.MYLISTOPT AS listOption,
+          profile.BANNEROPT AS bannerOption,
+          bannerdata.BANNERNAME
+    FROM account, profile, signon, bannerdata
+    WHERE account.USERID = #{username}
+      AND signon.USERNAME = account.USERID
+      AND profile.USERID = account.USERID
+      AND profile.FAVCATEGORY = bannerdata.FAVCATEGORY
   </select>
-  <insert id="insertAccount" parameterType="account">
-    INSERT INTO ACCOUNT (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, USERID) VALUES (#{email}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{username})
-  </insert>
-  <update id="updateAccount" parameterType="account">
-    UPDATE ACCOUNT SET
-    email = #{email},
-    firstname = #{firstName},
-    lastname = #{lastName},
-    status = #{status},
-    addr1 = #{address1},
-    addr2 = #{address2,jdbcType=VARCHAR},
-    city = #{city},
-    state = #{state},
-    zip = #{zip},
-    country = #{country},
-    phone = #{phone}
+
+  <select id="getAccountByUsernameAndPassword" parameterType="Account" resultType="Account">
+    SELECT
+      signon.username,
+      account.email,
+      account.firstname,
+      account.lastname,
+      account.status,
+      account.addr1 AS address1,
+      account.addr2 AS address2,
+      account.city,
+      account.state,
+      account.zip,
+      account.country,
+      account.phone,
+      profile.langpref AS languagePreference,
+      profile.favcategory AS favouriteCategoryId,
+      profile.mylistopt AS listOption,
+      profile.banneropt AS bannerOption,
+      bannerdata.bannername
+    FROM account, profile, signon, bannerdata
+    WHERE account.USERID = #{username}
+      AND signon.PASSWORD = #{password}
+      AND signon.USERNAME = account.USERID
+      AND profile.USERID = account.USERID
+      AND profile.FAVCATEGORY = bannerdata.FAVCATEGORY
+  </select>
+
+  <update id="updateAccount" parameterType="Account">
+    UPDATE account SET
+      EMAIL = #{email},
+      FIRSTNAME = #{firstName},
+      LASTNAME = #{lastName},
+      STATUS = #{status},
+      ADDR1 = #{address1},
+      ADDR2 = #{address2,jdbcType=VARCHAR},
+      CITY = #{city},
+      STATE = #{state},
+      ZIP = #{zip},
+      COUNTRY = #{country},
+      PHONE = #{phone}
     WHERE USERID = #{username}
   </update>
-  <insert id="insertProfile" parameterType="account">
-    INSERT INTO PROFILE (LANGPREF, FAVCATEGORY, MYLISTOPT, BANNEROPT, USERID)
+
+  <insert id="insertAccount" parameterType="Account">
+    INSERT INTO account
+      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, USERID)
+    VALUES
+      (#{email}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{username})
+  </insert>
+
+  <!--  
+  TODO MyBatis 3 does not map booleans to integers
+  <update id="updateProfile" parameterType="Account">
+    UPDATE profile SET
+      LANGPREF = #{languagePreference},
+      FAVCATEGORY = #{favouriteCategoryId},
+      MYLISTOPT = #{listOption},
+      BANNEROPT = #{bannerOption}
+    WHERE USERID = #{username}
+  </update>
+  -->
+
+  <update id="updateProfile" parameterType="Account">
+    UPDATE profile SET
+      LANGPREF = #{languagePreference},
+      FAVCATEGORY = #{favouriteCategoryId}
+    WHERE USERID = #{username}
+  </update>
+
+  <!--  
+  TODO MyBatis 3 does not map booleans to integers
+  <insert id="insertProfile" parameterType="Account">
+    INSERT INTO profile (LANGPREF, FAVCATEGORY, MYLISTOPT, BANNEROPT, USERID)
     VALUES (#{languagePreference}, #{favouriteCategoryId}, #{listOption}, #{bannerOption}, #{username})
   </insert>
-  <!--<insert id="insertProfile" parameterType="account">
-      INSERT INTO PROFILE (LANGPREF, FAVCATEGORY, USERID)
-  VALUES (#{languagePreference}, #{favouriteCategoryId}, #{username})
-  </insert>-->
-  <update id="updateProfile" parameterType="account">
-    UPDATE PROFILE SET
-    LANGPREF = #{languagePreference},
-    FAVCATEGORY = #{favouriteCategoryId},
-    MYLISTOPT = #{listOption},
-    BANNEROPT = #{bannerOption}
-    WHERE USERID = #{username}
-  </update>
-  <!--<update id="updateProfile" parameterType="account">
-      UPDATE PROFILE SET
-    LANGPREF = #{languagePreference},
-    FAVCATEGORY = #{favouriteCategoryId}
-  WHERE USERID = #{username}
-  </update>-->
-  <update id="updateSignon" parameterType="account">
-    UPDATE SIGNON SET PASSWORD = #{password} WHERE USERNAME = #{username}
+  -->
+
+  <insert id="insertProfile" parameterType="Account">
+    INSERT INTO profile (LANGPREF, FAVCATEGORY, USERID)
+    VALUES (#{languagePreference}, #{favouriteCategoryId}, #{username})
+  </insert>
+
+  <update id="updatesignon" parameterType="Account">
+    UPDATE signon SET PASSWORD = #{password}
+    WHERE USERNAME = #{username}
   </update>
 
-  <insert id="insertSignon" parameterType="account">
-        INSERT INTO SIGNON (PASSWORD,USERNAME) VALUES (#{password}, #{username})
+  <insert id="insertsignon" parameterType="Account">
+    INSERT INTO signon (PASSWORD,USERNAME)
+    VALUES (#{password}, #{username})
   </insert>
 
 </mapper>
