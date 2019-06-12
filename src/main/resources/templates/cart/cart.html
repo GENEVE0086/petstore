@@ -34,17 +34,18 @@
                         <td th:text="${cartItem.item.attribute1}+ ' ' +${cartItem.item.product.name}">Adult Female Persian</td>
                         <td th:text="${cartItem.inStock}">true</td>
                         <td>
-                            <input type="text" th:name="name" id="update" th:value="${cartItem.quantity}"/>
+                            <input type="text" th:name="${cartItem.item.itemId}" id="update" th:value="${cartItem.quantity}"/>
                         </td>
-                        <td th:text="${cartItem.item.listPrice}">$93.50</td>
-                        <td th:text="${cartItem.total}">$93.50</td>
+                        <td th:text="'$'+${cartItem.item.listPrice}">$93.50</td>
+                        <td th:text="'$'+${cartItem.total}">$93.50</td>
                         <td><a th:href="@{/removeItemFromCart(cartItemId=${cartItem.item.itemId})}" class="Button">Remove</a></td>
                     </tr>
                     <tr>
-                        <td colspan="7">Sub Total:
+                        <td th:text="'Sub Total: $'+${cart.subTotal}">Sub Total:xx
+                        </td>
+                        <td>
                             <input class="Button" type="submit" value="Update Cart" />
                         </td>
-                        <td>&nbsp;</td>
                     </tr>
                 </table>
             </form>

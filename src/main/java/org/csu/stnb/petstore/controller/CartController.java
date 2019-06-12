@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 
 @Controller
@@ -49,19 +50,19 @@ public class CartController {
     }
 
     @PostMapping("/updateCart")
-    public String updateCart(@RequestParam("name")String itemId,Model model){
+    public String updateCart(HttpServletRequest request, Model model){
         Iterator<CartItem> cartItems = cart.getAllCartItems();
         while (cartItems.hasNext()) {
             CartItem cartItem = (CartItem) cartItems.next();
-            String _itemId = cartItem.getItem().getItemId();
+            String itemId = cartItem.getItem().getItemId();
             try {
-                int quantity = Integer.parseInt((String)itemId);
-                cart.setQuantityByItemId(_itemId, quantity);
+                int quantity = Integer.parseInt((String)request.getParameter(itemId));
+                cart.setQuantityByItemId(itemId, quantity);
                 if (quantity < 1) {
                     cartItems.remove();
                 }
             } catch (Exception e) {
-                //ignore parse exceptions on purpose
+                System.out.println("error");
             }
         }
         model.addAttribute("cart",cart);
