@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('SignOn')">
+</head>
+<body>
+    <header th:replace="common/template_menu::header"></header>
+    <div id="Content">
+        <div id="Catalog">
+            <form action="/account/signon" method="post">
+                <p>Please enter your username and password.</p>
+                <p th:text="${msg}"></p>
+                <p>
+                    <input type="text" name="username" size="14" value="j2ee"/><br/>
+                    <input type="text" name="password" size="14" value="j2ee"/><br/>
+                    <input type="submit" name="signon" value="login"/>
+                </p>
+            </form>
+            Need a user name and password?
+            <a href="/account/register">Register Now!</a>
+        </div>
+
+    </div>
+    <footer th:replace="common/template_menu::footer"></footer>
+</body>
+</html>

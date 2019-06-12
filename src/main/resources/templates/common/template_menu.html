@@ -11,10 +11,10 @@
             <div id="MenuContent">
                 <a href="viewCart"><img align="middle" name="img_cart" src="/images/cart.gif"></a>
                 <img align="middle" src="/images/separator.gif">
-                <a href="/account/SignonForm.html">Sign In</a>
-                <a href="#">Sign Out</a>
-                <img align="middle" src="/images/separator.gif">
-                <a href="#">My Account</a>
+                <a href="/account/signonForm" th:unless="${account}">Sign In</a>
+                <a href="/account/signOut" th:if="${account}">Sign Out</a>
+                <img align="middle" src="/images/separator.gif" th:if="${account}">
+                <a href="/account/viewAccount" th:if="${account}">My Account</a>
                 <img align="middle" src="/images/separator.gif">
                 <a href="/viewHelp">?</a>
             </div>

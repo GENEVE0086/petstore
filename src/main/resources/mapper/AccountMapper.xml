@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="persistence.AccountMapper">
-
+<mapper namespace="org.csu.stnb.petstore.persistence.AccountMapper">
+  <cache />
   <select id="getAccountByUsername" parameterType="string" resultType="Account">
     SELECT
           signon.USERNAME,
@@ -30,7 +30,7 @@
       AND profile.FAVCATEGORY = bannerdata.FAVCATEGORY
   </select>
 
-  <select id="getAccountByUsernameAndPassword" parameterType="Account" resultType="Account">
+  <select id="getAccountByUsernameAndPassword" parameterType="account" resultType="account">
     SELECT
       signon.username,
       account.email,
@@ -112,12 +112,12 @@
     VALUES (#{languagePreference}, #{favouriteCategoryId}, #{username})
   </insert>
 
-  <update id="updatesignon" parameterType="Account">
+  <update id="updateSignon" parameterType="Account">
     UPDATE signon SET PASSWORD = #{password}
     WHERE USERNAME = #{username}
   </update>
 
-  <insert id="insertsignon" parameterType="Account">
+  <insert id="insertSignon" parameterType="Account">
     INSERT INTO signon (PASSWORD,USERNAME)
     VALUES (#{password}, #{username})
   </insert>
