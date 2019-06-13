@@ -1,5 +1,6 @@
 package org.csu.stnb.petstore.controller;
 
+import org.csu.stnb.petstore.domain.Account;
 import org.csu.stnb.petstore.domain.Cart;
 import org.csu.stnb.petstore.domain.CartItem;
 import org.csu.stnb.petstore.domain.Item;
@@ -12,25 +13,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Iterator;
 
 @Controller
-@SessionAttributes("cart")
+@SessionAttributes(value = {"account", "cart", "order"})
 public class CartController {
 
     @Autowired
     private CatalogService catalogService;
 
-    Cart cart = new Cart();
+    private Cart cart = new Cart();
 
     @GetMapping("/cart/view")
-    public String viewCart(Model model){
+    public String viewCart(@ModelAttribute("account") Account account, Model model){
         if(cart == null){
             cart = new Cart();
         }
-        model.addAttribute("cart",cart);
+        model.addAttribute("account", account);
+        model.addAttribute("cart", cart);
         return "cart/cart";
     }
 
     @GetMapping("/cart/addItem")
-    public String addItemToCart(@RequestParam("workingItemId")String workingItemId, Model model){
+    public String addItemToCart(@RequestParam("workingItemId")String workingItemId,
+                                @ModelAttribute("account") Account account,
+                                Model model){
 //        if(cart==null){
 //            cart = new Cart();
 //        }
@@ -41,12 +45,15 @@ public class CartController {
             Item item = catalogService.getItem(workingItemId);
             cart.addItem(item,isInStock);
         }
+        model.addAttribute("account", account);
         model.addAttribute("cart",cart);
         return "cart/cart";
     }
 
     @PostMapping("/cart/update")
-    public String updateCart(@ModelAttribute("name")String itemId, Model model){
+    public String updateCart(@ModelAttribute("name")String itemId,
+                             @ModelAttribute("account") Account account,
+                             Model model){
         Iterator<CartItem> cartItems = cart.getAllCartItems();
         while (cartItems.hasNext()) {
             CartItem cartItem = cartItems.next();
@@ -61,13 +68,16 @@ public class CartController {
                 //ignore parse exceptions on purpose
             }
         }
+        model.addAttribute("account", account);
         model.addAttribute("cart",cart);
         return "cart/cart";
     }
 
     @GetMapping("/cart/removeItem")
-    public String removeItemFromCart(@RequestParam("cartItemId")String cartItemId,Model model){
-
+    public String removeItemFromCart(@RequestParam("cartItemId") String cartItemId,
+                                     @ModelAttribute("account") Account account,
+                                     Model model){
+        model.addAttribute("account", account);
         Item item=cart.removeItemById(cartItemId);
         if (item==null){
             model.addAttribute("message","Attempted to remove null CartItem from Cart.");

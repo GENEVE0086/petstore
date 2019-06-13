@@ -53,12 +53,21 @@ public class OrderController {
     order.setBillCountry(country);
     order.setShipCountry(country);
 
+    System.out.println(address1);
+    System.out.println(address2);
+    System.out.println(firstName);
+    System.out.println(lastName);
+    System.out.println(cardType);
+    System.out.println(state);
+    System.out.println(zip);
+    System.out.println(country);
+
     model.addAttribute("order", order);
 
-    if (shippingAddressRequired != null) {
-      return "order/ShippingForm";
-    } else {
+    if (shippingAddressRequired.equals("")) {
       return "order/ConfirmOrder";
+    } else {
+      return "order/ShippingForm";
     }
   }
 

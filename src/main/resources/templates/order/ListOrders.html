@@ -19,7 +19,9 @@
 	<!-- 循环 -->
 		<tr th:each="order:${orderList}">
 			<td ><a th:text="${order.orderId}" th:href="@{/viewOrder(orderId=${order.orderId})}">1000</a></td>
-			<td th:text="${#dates.format(order.orderDate, 'yyyy/MM/dd hh:mm:ss')}">2014/03/23 12:00:00</td>
+			<td th:text="${order.orderDate}">2014/03/23 12:00:00</td>
+<!--			<td th:text="${#dates.format(order.orderDate, 'yyyy/MM/dd hh:mm:ss')}">2014/03/23 12:00:00</td>-->
+
 			<td th:text="${order.totalPrice}">$18.50</td>
 <!--			<td th:text="${#numbers.formatDecimal(order.totalPrice, '$#,##0.00')}">$18.50</td>-->
 		</tr>
