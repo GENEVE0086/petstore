@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @SessionAttributes("account")
 public class AccountController {
     @Autowired
     AccountService accountService;
-    Account account=new Account();
+    Account account=null;
 
     @GetMapping("/account/signonForm")
     public String signonForm(){
@@ -20,7 +22,6 @@ public class AccountController {
     }
 
     @PostMapping("/account/signon")
-
     public String signon(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
         account=accountService.getAccount(username,password);
         if(account==null){
@@ -42,27 +43,33 @@ public class AccountController {
     }
     @GetMapping("/account/register")
     public String register(Model model){
-        model.addAttribute("account",account);
+        if(account!=null){
+            model.addAttribute("account",account);
+        }
         return "account/NewAccountForm";
     }
     @PostMapping("/account/addNewAccount")
     public String addNewAccount(@ModelAttribute(value="account") Account account, Model model){
-        System.out.println(account.getUsername());
-        System.out.println(account.getPassword());
-        accountService.insertAccount(account);
-        model.addAttribute("account",account);
+        if(account!=null){
+            accountService.insertAccount(account);
+            model.addAttribute("account",account);
+        }
         return "catalog/main";
     }
 
     @GetMapping("/account/viewAccount")
     public String viewAccount(Model model){
-        model.addAttribute("account",account);
+        if(account!=null){
+            model.addAttribute("account",account);
+        }
         return "account/EditAccountForm";
     }
 
     @PostMapping("/account/editAccount")
     public String editAccount(@ModelAttribute(value="account") Account account, Model model){
-        accountService.updateAccount(account);
+        if(account!=null){
+            accountService.updateAccount(account);
+        }
         account=accountService.getAccount(account.getUsername());
         model.addAttribute("account",account);
         return "account/EditAccountForm";
