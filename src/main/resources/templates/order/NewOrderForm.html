@@ -9,7 +9,6 @@
 <div id="Content">
 
 <div id="Catalog">
-<!--	<form action="ConfirmOrder.html">-->
 	<form action="/order/confirmOrder" method="post">
 
 	<table>
@@ -24,12 +23,12 @@
 		</tr>
 		<tr>
 			<td>Card Number:</td>
-			<td><input name="creditCard" value="999 9999 9999 9999" type="text"  th:text="${order.creditCard}"> * Use a fake
+			<td><input name="creditCard" value="999 9999 9999 9999" type="text"  th:value="${order.creditCard}"> * Use a fake
 			number!</td>
 		</tr>
 		<tr>
 			<td>Expiry Date (MM/YYYY):</td>
-			<td><input name="expiryDate" value="12/03" type="text" th:text="${order.expiryDate}"></td>
+			<td><input name="expiryDate" value="12/03" type="text" th:value="${order.expiryDate}"></td>
 		</tr>
 		<tr>
 			<th colspan="2">Billing Address</th>

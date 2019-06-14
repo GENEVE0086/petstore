@@ -19,7 +19,7 @@
 	<table>
 		<tbody>
 		<tr>
-			<th align="center" colspan="2" th:text="'Order#'+${order.orderId} + ${#dates.format(order.orderDate, 'yyyy/MM/dd hh:mm:ss')}">
+			<th align="center" colspan="2" th:text="'Order#'+${order.orderId} + ${order.orderDate}">
 			2014/03/23 12:00:00
 			</th>
 		</tr>
@@ -128,7 +128,7 @@
 							</tr>
 
 							<tr th:each="lineItem:${order.lineItems}">
-								<td><a th:href="@{/catalog/item(itemId=${lineItem.item.itemId})}">EST-4</a></td>
+								<td><a th:href="@{/catalog/item(itemId=${lineItem.item.itemId})}" th:text="${lineItem.item.itemId}">EST-4</a></td>
 								<td th:if="${lineItem.item != null}" th:text="${lineItem.item.attribute1} + ' '
 									+ ${lineItem.item.attribute2 == null ? '' : lineItem.item.attribute2 + ' '}
 									+ ${lineItem.item.attribute3 == null ? '' : lineItem.item.attribute3 + ' '}
@@ -140,6 +140,9 @@
 								<td th:if="${lineItem.item == null}">
 									<i>{description unavailable}</i>
 								</td>
+								<td th:text="${lineItem.quantity}"></td>
+								<td th:text="${lineItem.unitPrice}"></td>
+								<td th:text="${lineItem.total}"></td>
 							</tr>
 
 							<tr>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -17,6 +18,9 @@ public class OrderController {
 
   @Autowired
   OrderService orderService;
+
+  @Autowired
+  HttpSession session;
 
   @PostMapping("/order/confirmOrder")
   public String confirmOrder(@ModelAttribute("cardType") String cardType,
@@ -53,14 +57,6 @@ public class OrderController {
     order.setBillCountry(country);
     order.setShipCountry(country);
 
-    System.out.println(address1);
-    System.out.println(address2);
-    System.out.println(firstName);
-    System.out.println(lastName);
-    System.out.println(cardType);
-    System.out.println(state);
-    System.out.println(zip);
-    System.out.println(country);
 
     model.addAttribute("order", order);
 
@@ -110,21 +106,27 @@ public class OrderController {
   }
 
   @GetMapping("/order/order")
-  public String order(@ModelAttribute("order") Order order, Model model) {
+  public String order(@ModelAttribute("order") Order order,Model model) {
     model.addAttribute("lineItems", order.getLineItems());
     orderService.insertOrder(order);
-    Cart cart = new Cart();
-    model.addAttribute("cart", cart);
+
+
+    System.out.println(session.getAttribute("cart"));
+    session.setAttribute("cart",null);
+    System.out.println(session.getAttribute("cart"));
+
     return "order/ViewOrder";
   }
 
   @GetMapping("/order/viewOrder")
-  public String viewOrder(@ModelAttribute("cart") Cart cart,
-                          @ModelAttribute("account") Account account,
+  public String viewOrder(
                           Model model) {
+    Account account= (Account) session.getAttribute("account");
+    Cart cart = (Cart) session.getAttribute("cart");
     if (cart == null) {
       cart = new Cart();
-      model.addAttribute("cart", cart);
+//      model.addAttribute("cart", cart);
+      session.setAttribute("cart",cart);
     }
     if (account == null) {
       return "account/signonForm";

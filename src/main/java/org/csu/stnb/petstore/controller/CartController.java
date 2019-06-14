@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.util.Iterator;
 
@@ -19,10 +21,16 @@ public class CartController {
     @Autowired
     private CatalogService catalogService;
 
-    private Cart cart = new Cart();
+    @Autowired
+    HttpSession session;
+
+//    private Cart cart = new Cart();
 
     @GetMapping("/cart/view")
-    public String viewCart(@ModelAttribute("account") Account account, Model model){
+    public String viewCart( Model model){
+        Account account= (Account) session.getAttribute("account");
+        Cart cart = (Cart) session.getAttribute("cart");
+        System.out.println(cart);
         if(cart == null){
             cart = new Cart();
         }
@@ -33,11 +41,12 @@ public class CartController {
 
     @GetMapping("/cart/addItem")
     public String addItemToCart(@RequestParam("workingItemId")String workingItemId,
-                                @ModelAttribute("account") Account account,
                                 Model model){
-//        if(cart==null){
-//            cart = new Cart();
-//        }
+        Cart cart = (Cart) session.getAttribute("cart");
+//        Cart cart = new Cart();
+        if(cart==null){
+            cart = new Cart();
+        }
         if(cart.containsItemId(workingItemId)){
             cart.incrementQuantityByItemId(workingItemId);
         }else {
@@ -45,22 +54,23 @@ public class CartController {
             Item item = catalogService.getItem(workingItemId);
             cart.addItem(item,isInStock);
         }
-        model.addAttribute("account", account);
         model.addAttribute("cart",cart);
+        session.setAttribute("cart",cart);
         return "cart/cart";
     }
 
     @PostMapping("/cart/update")
-    public String updateCart(@ModelAttribute("name")String itemId,
-                             @ModelAttribute("account") Account account,
+    public String updateCart(HttpServletRequest request,
                              Model model){
+        Cart cart = (Cart) session.getAttribute("cart");
+//        Cart cart = new Cart();
         Iterator<CartItem> cartItems = cart.getAllCartItems();
         while (cartItems.hasNext()) {
             CartItem cartItem = cartItems.next();
-            String _itemId = cartItem.getItem().getItemId();
+            String itemId = cartItem.getItem().getItemId();
             try {
-                int quantity = Integer.parseInt(itemId);
-                cart.setQuantityByItemId(_itemId, quantity);
+                int quantity = Integer.parseInt((String)request.getParameter(itemId));
+                cart.setQuantityByItemId(itemId, quantity);
                 if (quantity < 1) {
                     cartItems.remove();
                 }
@@ -68,8 +78,9 @@ public class CartController {
                 //ignore parse exceptions on purpose
             }
         }
-        model.addAttribute("account", account);
+//        model.addAttribute("account", account);
         model.addAttribute("cart",cart);
+        session.setAttribute("cart",cart);
         return "cart/cart";
     }
 
@@ -77,15 +88,20 @@ public class CartController {
     public String removeItemFromCart(@RequestParam("cartItemId") String cartItemId,
                                      @ModelAttribute("account") Account account,
                                      Model model){
+//        Cart cart = new Cart();
+        Cart cart = (Cart) session.getAttribute("cart");
         model.addAttribute("account", account);
         Item item=cart.removeItemById(cartItemId);
         if (item==null){
             model.addAttribute("message","Attempted to remove null CartItem from Cart.");
             model.addAttribute("cart",cart);
+            session.setAttribute("cart",cart);
             return "common/error";
         }else {
             model.addAttribute("cart",cart);
+            session.setAttribute("cart",cart);
             return "cart/Cart";
         }
+
     }
 }

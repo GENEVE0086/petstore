@@ -59,9 +59,9 @@ public class AccountController {
 
     @GetMapping("/account/viewAccount")
     public String viewAccount(@ModelAttribute("account") Account account,
-                              @ModelAttribute("order") Order order, Model model){
+                               Model model){
         model.addAttribute("account",account);
-        model.addAttribute("order", order);
+//        model.addAttribute("order", order);
         return "account/EditAccountForm";
     }
 
